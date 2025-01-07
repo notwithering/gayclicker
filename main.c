@@ -7,22 +7,20 @@
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include <unistd.h>
 #include <time.h>
+#include <unistd.h>
 
 #define LOCK_FILE "/tmp/gayclicker.lock"
-#define CLICK(display) do {									\
-    XTestFakeButtonEvent(display, 1, True, CurrentTime);	\
-    XTestFakeButtonEvent(display, 1, False, CurrentTime);	\
-    XFlush(display);										\
-} while (0)
-
+#define CLICK(display)											\
+	do {														\
+		XTestFakeButtonEvent(display, 1, True, CurrentTime);	\
+		XTestFakeButtonEvent(display, 1, False, CurrentTime);	\
+		XFlush(display);										\
+	} while (0)
 
 volatile bool running = true;
 
-void handle_signal(int signum) {
-	running = false;
-}
+void handle_signal(int signum) { running = false; }
 
 int main(int argc, char *argv[]) {
 	FILE *lockfile = fopen(LOCK_FILE, "r");
@@ -50,7 +48,6 @@ int main(int argc, char *argv[]) {
 		useCps = true;
 	}
 
-
 	lockfile = fopen(LOCK_FILE, "w");
 	if (!lockfile) {
 		perror("failed to create lock file");
@@ -68,7 +65,7 @@ int main(int argc, char *argv[]) {
 		unlink(LOCK_FILE);
 		return 1;
 	}
-	
+
 	if (useCps) {
 		struct timespec delay;
 		delay.tv_sec = cps >= 1 ? 1 / cps : 1;
