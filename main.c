@@ -71,8 +71,8 @@ int main(int argc, char *argv[]) {
 	
 	if (useCps) {
 		struct timespec delay;
-		delay.tv_sec = 0;
-		delay.tv_nsec = 1000000000L / cps;  
+		delay.tv_sec = cps >= 1 ? 1 / cps : 1;
+		delay.tv_nsec = cps >= 1 ? (1000000000L / cps) % 1000000000L : 0;
 
 		while (running) {
 			CLICK(display);
