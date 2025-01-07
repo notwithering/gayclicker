@@ -41,7 +41,7 @@ int main(int argc, char *argv[]) {
 	bool useCps;
 	int cps;
 
-	if (argc == 2) {
+	if (argc >= 2) {
 		cps = atoi(argv[1]);
 		if (cps <= 0) {
 			perror("invalid cps value");
